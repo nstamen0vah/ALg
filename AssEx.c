@@ -321,8 +321,10 @@ int iterative_lcs(char *x, char *y){
 	/* n - 2, because the row starts from index 0 
 	and the length of the row is n - 1.*/
 	longest_common_subseq_len = f_arr[(n-1)*m + m-1];
-	//printf("Dynamic programming table: \n");
-	//table_print(f_arr);
+	if(printBool){
+		printf("Dynamic programming table: \n");
+		table_print(f_arr);
+	}
 	free(f_arr);
 	return longest_common_subseq_len;
 }
@@ -356,7 +358,7 @@ int recursive_lcs_no_mem(){
 	int *dp_arr;
 	dp_arr = (int*)calloc(m*n, sizeof(int));
 	sub_lcs(xLen, yLen, dp_arr);
-    //table_print(dp_arr);
+	if(printBool) table_print(dp_arr);
   	free(dp_arr);
 }
 
@@ -417,7 +419,7 @@ int recursive_lcs_with_mem(int i, int j){
 	sub_lcs_recursive(i, j, a, b, &count_inserted);
 	proportion = count_inserted/((xLen)*(yLen+1) + yLen + 1.0)*100;
 	lcs = a[m*(n - 1) + m-1].v;
-    //print_struct_table(a);
+	if(printBool) print_struct_table(a);
   	free(a);
   	free(b);
   	
@@ -524,7 +526,9 @@ int ed(char *x, char *y){
 		}
 	}
 	edit_distance = d_arr[(m - 1)*(n - 1) + n - 2];
-	table_print(d_arr);
+	if(printBool){
+		table_print(d_arr);
+	}
 	free(d_arr);
 	return edit_distance;
 }
@@ -580,10 +584,6 @@ int hsls(char *x, char* y){
   int n = xLen + 1; //rows
   int m = yLen + 1; // columns
 
-  //Testing
-  //int n = 8;
-  //int m = 9;
-
   int i, j = 0;
   int best_score = 0;
   int *s_arr;
@@ -611,7 +611,7 @@ int hsls(char *x, char* y){
       }
     }
   }
-  table_print(s_arr);
+  if(printBool) table_print(s_arr);
   free(s_arr);
   return best_score;
 }
@@ -654,7 +654,7 @@ int main(int argc, char *argv[]) {
 					start = clock();
 					int lcs = recursive_lcs_with_mem(xLen, yLen);
 					end = clock();
-					printf("Time taken: %.2fseconds\n", (double)(end - start)/CLOCKS_PER_SEC);
+					printf("Memo Time taken: %.2fseconds\n", (double)(end - start)/CLOCKS_PER_SEC);
 					printf("Recursive version with memoisation\n");
 					printf("Length of longest common subsequence is: %d\n", lcs);
 					printf("Number of table entries computed: %d\n", count_inserted);
